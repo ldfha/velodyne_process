@@ -2,7 +2,7 @@
 
 ros::Publisher pub_lane_marker;  // 필터링된 포인트를 발행할 Publisher
 
-void ransac_callback(const sensor_msgs::PointCloud2ConstPtr& input)
+void fitting_callback(const sensor_msgs::PointCloud2ConstPtr& input)
 {
     // 포인트 클라우드 포인터 초기화
     pcl::PointCloud<pcl::PointXYZI>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZI>);
@@ -37,7 +37,7 @@ int main(int argc, char** argv)
     ros::NodeHandle nh;
 
     // Subscriber 설정
-    ros::Subscriber sub = nh.subscribe("filtered_lane", 1, ransac_callback);
+    ros::Subscriber sub = nh.subscribe("filtered_lane", 1, fitting_callback);
 
     // Publisher 설정
     pub_lane_marker = nh.advertise<sensor_msgs::PointCloud2>("lane_fitting", 1);
