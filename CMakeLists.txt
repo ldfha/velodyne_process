@@ -51,6 +51,7 @@ add_executable(lidar_voxel_node src/lidar_voxel.cpp)
 add_executable(lidar_roi_node src/lidar_roi.cpp)
 add_executable(lidar_outlier_node src/lidar_outlier.cpp)
 #add_executable(lidar_dbscan_node src/lidar_dbscan.cpp)
+add_executable(lane_filtering_node src/lane_filtering.cpp)
 
 ## 라이브러리 링크
 target_link_libraries(lidar_ransac_node
@@ -73,6 +74,11 @@ target_link_libraries(lidar_outlier_node
   ${PCL_LIBRARIES}  # PCL 라이브러리 추가
 )
 
+target_link_libraries(lane_filtering_node
+  ${catkin_LIBRARIES}
+  ${PCL_LIBRARIES}  # PCL 라이브러리 추가
+)
+
 #target_link_libraries(lidar_dbscan_node
 #  ${catkin_LIBRARIES}
 #  ${PCL_LIBRARIES}  # PCL 라이브러리 추가
@@ -91,3 +97,4 @@ add_dependencies(lidar_voxel_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_E
 add_dependencies(lidar_roi_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(lidar_outlier_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})  
 #add_dependencies(lidar_dbscan_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})  
+add_dependencies(lane_filtering_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})  

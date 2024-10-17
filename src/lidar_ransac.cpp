@@ -66,7 +66,7 @@ int main(int argc, char** argv)
     ros::NodeHandle nh;
 
     // Subscriber 설정
-    ros::Subscriber sub = nh.subscribe("lidar_voxel", 1, ransac_callback);
+    ros::Subscriber sub = nh.subscribe("lidar_roi", 1, ransac_callback);
 
     // Publisher 설정
     pub_non_ground = nh.advertise<sensor_msgs::PointCloud2>("lidar_ransac", 1);
