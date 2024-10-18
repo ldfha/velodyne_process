@@ -1,0 +1,6 @@
+<launch>
+    <node pkg="velodyne_process" type="lidar_voxel_node" name="lidar_voxel" output="screen"/>
+    <node pkg="velodyne_process" type="lidar_ransac_node" name="lidar_ransac" output="screen"/>
+    <node pkg="velodyne_process" type="lidar_roi_node" name="lidar_roi" output="screen"/>
+    <node pkg="velodyne_process" type="lane_filtering_node" name="lane_filtering" output="screen"/>
+</launch>
