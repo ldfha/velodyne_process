@@ -56,7 +56,6 @@
   <build_depend>pcl_ros</build_depend>
   <build_depend>pcl_conversions</build_depend>
   <build_depend>velodyne_pcl</build_depend>
-  <!--<build_depend>mlpack</build_depend>  추가된 라인 -->
 
   <build_export_depend>roscpp</build_export_depend>
   <build_export_depend>std_msgs</build_export_depend>
@@ -67,7 +66,11 @@
   <exec_depend>pcl_ros</exec_depend>
   <exec_depend>pcl_conversions</exec_depend>
   <exec_depend>velodyne_pcl</exec_depend>
-  <!--<exec_depend>mlpack</exec_depend>  추가된 라인 -->
+  <build_depend>message_generation</build_depend>
+  <exec_depend>message_runtime</exec_depend>
+  <build_depend>rubber_cone_mission</build_depend>  <!-- Python 패키지 의존성 추가 -->
+  <exec_depend>rubber_cone_mission</exec_depend>
+
 
 
   <!-- The export tag contains other, unspecified, tags -->
