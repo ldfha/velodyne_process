@@ -17,7 +17,7 @@ void cloud_callBack(const sensor_msgs::PointCloud2ConstPtr& input)
     sor.setInputCloud (cloudPtr);
     // 샘플링 하는 방법 이거 너무 작게 하면 샘플링 에러 메세지 뜸 고것을 주의 하자
     //leaf size  1cm 격자의 x, y, z 크기
-    sor.setLeafSize (0.1f, 0.1f, 0.1f);
+    sor.setLeafSize (0.05f, 0.05f, 0.05f);
     sor.filter(cloud_filtered);
 
     sensor_msgs::PointCloud2 output;

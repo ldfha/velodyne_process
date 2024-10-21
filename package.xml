@@ -68,8 +68,9 @@
   <exec_depend>velodyne_pcl</exec_depend>
   <build_depend>message_generation</build_depend>
   <exec_depend>message_runtime</exec_depend>
-  <build_depend>rubber_cone_mission</build_depend>  <!-- Python 패키지 의존성 추가 -->
-  <exec_depend>rubber_cone_mission</exec_depend>
+
+  <depend>geometry_msgs</depend>
+
 
 
 

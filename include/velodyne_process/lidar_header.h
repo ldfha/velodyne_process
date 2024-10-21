@@ -8,10 +8,10 @@
 #include <std_msgs/String.h>
 #include <sensor_msgs/PointCloud2.h>
 #include <velodyne_pcl/point_types.h>
+#include <visualization_msgs/Marker.h>
+#include <visualization_msgs/MarkerArray.h>
+#include <geometry_msgs/Point.h>
 
-/* #include <mlpack.hpp>
-#include <mlpack/methods/dbscan/dbscan.hpp> */
-#include <armadillo>
 
 #include <pcl/search/kdtree.h>
 #include <pcl_ros/point_cloud.h>
