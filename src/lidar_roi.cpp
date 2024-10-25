@@ -44,13 +44,13 @@ void roi_callback(const sensor_msgs::PointCloud2ConstPtr& input)
     // Apply Passthrough Filter
     pass.setInputCloud (cloud_p2);
     pass.setFilterFieldName ("z");
-    pass.setFilterLimits (-2, 1);   // 상하거리
+    pass.setFilterLimits (-0.5, 1);   // 상하거리
     //pass.setFilterLimitsNegative (true);
     pass.filter (*cloud_p2);
 
     // // Apply Passthrough Filter
     pass.setFilterFieldName ("x");
-    pass.setFilterLimits (0, 10);  // 앞뒤거리
+    pass.setFilterLimits (0, 5);  // 앞뒤거리
     pass.setInputCloud (cloud_p2);
     pass.filter (*cloud_p2);
 
