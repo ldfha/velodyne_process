@@ -149,6 +149,19 @@ public:
                 label = "right";
             }
 
+            // For unclassified centroids, classify based on y-coordinate
+            if (label == "unknown") {
+                if (centroid_msg.centroid.y < 0) {
+                    label = "right";
+                    ROS_INFO("Centroid classified as 'right' based on y-coordinate.");
+                } else if (centroid_msg.centroid.y > 0) {
+                    label = "left";
+                    ROS_INFO("Centroid classified as 'left' based on y-coordinate.");
+                } else {
+                    ROS_INFO("Centroid y-coordinate is zero; label remains 'unknown'.");
+                }
+            }
+
             // Publish centroid with label
             if (label == "left" || label == "right") {
                 velodyne_process::CentroidWithLabel classified_centroid;
@@ -202,6 +215,7 @@ public:
         // Clear data
         lidar_centroids_.centroids.clear();
     }
+
 
 private:
     bool projectPointToImage(const cv::Point3d& point_lidar, const std::string& camera_side, cv::Point2i& uv) {

@@ -30,7 +30,7 @@ public:
         centroid_threshold_ = 5.0;    // Threshold distance
         default_offset_ = 1.0;         // Offset when only one side centroid is detected
         steering_angle_deg_ = 0.0;     // Default steering angle
-        x_match_threshold_ = 0.3;      // X-coordinate matching threshold
+        x_match_threshold_ = 0.8;      // X-coordinate matching threshold
 
         // Initialize current steering angle
         current_steering_angle_ = 0.0;
