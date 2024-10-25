@@ -45,7 +45,7 @@ int main(int argc,char** argv)
     ros::init(argc, argv, "lidar_outlier");
     ros::NodeHandle nh;
 
-    ros::Subscriber sub = nh.subscribe("lidar_roi", 1, outlier_callback);
+    ros::Subscriber sub = nh.subscribe("lidar_ransac", 1, outlier_callback);
     pub = nh.advertise<sensor_msgs::PointCloud2> ("lidar_outlier",1);
 
     std::cout << "outlier complete" << std::endl;
