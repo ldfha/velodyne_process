@@ -3,8 +3,11 @@
 #include <velodyne_process/CentroidWithLabelArray.h>
 #include <cv_bridge/cv_bridge.h>
 #include <opencv2/opencv.hpp>
+<<<<<<< HEAD
 #include <visualization_msgs/Marker.h>
 #include <visualization_msgs/MarkerArray.h>
+=======
+>>>>>>> c3b03f034b34b24bf89f9103c51278a9e4bea59f
 
 class CentroidColorClassifier {
 public:
@@ -12,8 +15,13 @@ public:
         ros::NodeHandle nh;
 
         // Parameters
+<<<<<<< HEAD
         kernel_size_ = 51;  // Pixel area size (should be odd)
         threshold_ = 0.4;   // Color classification threshold
+=======
+        kernel_size_ = 31;  // Pixel area size (should be odd)
+        threshold_ = 0.3;   // Color classification threshold
+>>>>>>> c3b03f034b34b24bf89f9103c51278a9e4bea59f
 
         // Camera parameters
         camera_params_["left"]["camera_matrix"] = (cv::Mat_<double>(3,3) << 
@@ -40,8 +48,13 @@ public:
 
         // Subscribers
         centroid_sub_ = nh.subscribe("/centroid_info", 1, &CentroidColorClassifier::centroidCallback, this);
+<<<<<<< HEAD
         image_sub_left_ = nh.subscribe("/camera2/usb_cam_2/image_raw", 1, &CentroidColorClassifier::imageCallbackLeft, this);
         image_sub_right_ = nh.subscribe("/camera1/usb_cam_1/image_raw", 1, &CentroidColorClassifier::imageCallbackRight, this);
+=======
+        image_sub_left_ = nh.subscribe("/synced/camera2/usb_cam_2/image_raw", 1, &CentroidColorClassifier::imageCallbackLeft, this);
+        image_sub_right_ = nh.subscribe("/synced/camera1/usb_cam_1/image_raw", 1, &CentroidColorClassifier::imageCallbackRight, this);
+>>>>>>> c3b03f034b34b24bf89f9103c51278a9e4bea59f
 
         // Publishers
         classified_centroid_pub_ = nh.advertise<velodyne_process::CentroidWithLabelArray>("/classified_centroids", 1);
@@ -57,17 +70,29 @@ public:
     void centroidCallback(const velodyne_process::CentroidWithLabelArray::ConstPtr& centroid_array) {
         if (!centroid_array || centroid_array->centroids.empty()) {
             ROS_WARN("Received empty centroid array.");
+<<<<<<< HEAD
         } else {
             lidar_centroids_ = *centroid_array;
         }
+=======
+            return;
+        }
+        lidar_centroids_ = *centroid_array;
+>>>>>>> c3b03f034b34b24bf89f9103c51278a9e4bea59f
         processCentroids();
     }
 
     void imageCallbackLeft(const sensor_msgs::ImageConstPtr& img_msg) {
+<<<<<<< HEAD
         try {
             current_image_left_ = cv_bridge::toCvShare(img_msg, "bgr8")->image.clone();
             left_image_header_ = img_msg->header;  // 헤더 저장
             ROS_INFO("Left image received.");
+=======
+        
+        try {
+            current_image_left_ = cv_bridge::toCvShare(img_msg, "bgr8")->image.clone();
+>>>>>>> c3b03f034b34b24bf89f9103c51278a9e4bea59f
         } catch (cv_bridge::Exception& e) {
             ROS_ERROR("cv_bridge exception (left camera): %s", e.what());
             current_image_left_ = cv::Mat();
@@ -77,8 +102,11 @@ public:
     void imageCallbackRight(const sensor_msgs::ImageConstPtr& img_msg) {
         try {
             current_image_right_ = cv_bridge::toCvShare(img_msg, "bgr8")->image.clone();
+<<<<<<< HEAD
             right_image_header_ = img_msg->header;  // 헤더 저장
             ROS_INFO("Right image received.");
+=======
+>>>>>>> c3b03f034b34b24bf89f9103c51278a9e4bea59f
         } catch (cv_bridge::Exception& e) {
             ROS_ERROR("cv_bridge exception (right camera): %s", e.what());
             current_image_right_ = cv::Mat();
@@ -86,6 +114,14 @@ public:
     }
 
     void processCentroids() {
+<<<<<<< HEAD
+=======
+        if (lidar_centroids_.centroids.empty()) {
+            ROS_INFO("No centroid data to process.");
+            return;
+        }
+
+>>>>>>> c3b03f034b34b24bf89f9103c51278a9e4bea59f
         if (current_image_left_.empty() || current_image_right_.empty()) {
             ROS_INFO("Waiting for images from both cameras.");
             return;
@@ -93,7 +129,11 @@ public:
 
         velodyne_process::CentroidWithLabelArray classified_centroid_array;
         classified_centroid_array.header.stamp = ros::Time::now();
+<<<<<<< HEAD
         classified_centroid_array.header.frame_id = "map";
+=======
+        classified_centroid_array.header.frame_id = "velodyne";
+>>>>>>> c3b03f034b34b24bf89f9103c51278a9e4bea59f
 
         visualization_msgs::MarkerArray marker_array;
         int marker_id = 0;
@@ -102,6 +142,7 @@ public:
         cv::Mat annotated_image_left = current_image_left_.clone();
         cv::Mat annotated_image_right = current_image_right_.clone();
 
+<<<<<<< HEAD
         if (lidar_centroids_.centroids.empty()) {
             ROS_INFO("No centroid data to process.");
         } else {
@@ -202,6 +243,91 @@ public:
         }
 
         // Publish centroids and markers if any
+=======
+        for (const auto& centroid_msg : lidar_centroids_.centroids) {
+            cv::Point3d centroid_point(
+                centroid_msg.centroid.x,
+                centroid_msg.centroid.y,
+                centroid_msg.centroid.z
+            );
+
+            std::vector<std::string> labels_detected;
+
+            // Left camera projection and color classification
+            cv::Point2i uv_left;
+            if (projectPointToImage(centroid_point, "left", uv_left)) {
+                std::string label_left = classifyConeColor(annotated_image_left, uv_left.x, uv_left.y);
+                if (label_left == "left" || label_left == "right") {
+                    labels_detected.push_back(label_left);
+                    cv::Scalar color = (label_left == "left") ? cv::Scalar(0, 255, 255) : cv::Scalar(255, 0, 0);
+                    cv::circle(annotated_image_left, cv::Point(uv_left.x, uv_left.y + 10), 5, color, 2);
+                    cv::rectangle(annotated_image_left,
+                        cv::Point(uv_left.x - kernel_size_ / 2, uv_left.y - kernel_size_ / 2),
+                        cv::Point(uv_left.x + kernel_size_ / 2, uv_left.y + kernel_size_ / 2),
+                        color, 2);
+                }
+            }
+
+            // Right camera projection and color classification
+            cv::Point2i uv_right;
+            if (projectPointToImage(centroid_point, "right", uv_right)) {
+                std::string label_right = classifyConeColor(annotated_image_right, uv_right.x, uv_right.y);
+                if (label_right == "left" || label_right == "right") {
+                    labels_detected.push_back(label_right);
+                    cv::Scalar color = (label_right == "left") ? cv::Scalar(0, 255, 255) : cv::Scalar(255, 0, 0);
+                    cv::circle(annotated_image_right, cv::Point(uv_right.x, uv_right.y + 10), 5, color, 2);
+                    cv::rectangle(annotated_image_right,
+                        cv::Point(uv_right.x - kernel_size_ / 2, uv_right.y - kernel_size_ / 2),
+                        cv::Point(uv_right.x + kernel_size_ / 2, uv_right.y + kernel_size_ / 2),
+                        color, 2);
+                }
+            }
+
+            // Decide the label based on detected labels
+            std::string label = "unknown";
+            if (std::find(labels_detected.begin(), labels_detected.end(), "left") != labels_detected.end()) {
+                label = "left";
+            } else if (std::find(labels_detected.begin(), labels_detected.end(), "right") != labels_detected.end()) {
+                label = "right";
+            }
+
+            // Publish centroid with label if classified
+            if (label == "left" || label == "right") {
+                velodyne_process::CentroidWithLabel classified_centroid;
+                classified_centroid.centroid = centroid_msg.centroid;
+                classified_centroid.label = label;
+                classified_centroid_array.centroids.push_back(classified_centroid);
+
+                // Create marker
+                visualization_msgs::Marker marker;
+                marker.header.frame_id = "velodyne";
+                marker.id = marker_id++;
+                marker.type = visualization_msgs::Marker::SPHERE;
+                marker.action = visualization_msgs::Marker::ADD;
+                marker.pose.position = centroid_msg.centroid;
+                marker.pose.orientation.w = 1.0;
+                marker.scale.x = 0.2;
+                marker.scale.y = 0.2;
+                marker.scale.z = 0.2;
+                if (label == "left") {
+                    marker.color.r = 1.0;
+                    marker.color.g = 1.0;
+                    marker.color.b = 0.0;
+                } else if (label == "right") {
+                    marker.color.r = 0.0;
+                    marker.color.g = 0.0;
+                    marker.color.b = 1.0;
+                }
+                marker.color.a = 1.0;
+                marker.lifetime = ros::Duration(0.3);
+                marker_array.markers.push_back(marker);
+            } else {
+                ROS_INFO("Centroid ignored due to color mismatch or projection failure.");
+            }
+        }
+
+        // Publish classified centroids and markers
+>>>>>>> c3b03f034b34b24bf89f9103c51278a9e4bea59f
         if (!classified_centroid_array.centroids.empty()) {
             classified_centroid_pub_.publish(classified_centroid_array);
             centroid_marker_pub_.publish(marker_array);
@@ -209,8 +335,23 @@ public:
         } else {
             ROS_INFO("No centroids classified.");
         }
+<<<<<<< HEAD
     }
 
+=======
+
+        // Publish annotated images
+        sensor_msgs::ImagePtr annotated_msg_left = cv_bridge::CvImage(std_msgs::Header(), "bgr8", annotated_image_left).toImageMsg();
+        sensor_msgs::ImagePtr annotated_msg_right = cv_bridge::CvImage(std_msgs::Header(), "bgr8", annotated_image_right).toImageMsg();
+        annotated_image_pub_left_.publish(annotated_msg_left);
+        annotated_image_pub_right_.publish(annotated_msg_right);
+
+        // Clear data
+        lidar_centroids_.centroids.clear();
+    }
+
+
+>>>>>>> c3b03f034b34b24bf89f9103c51278a9e4bea59f
 private:
     bool projectPointToImage(const cv::Point3d& point_lidar, const std::string& camera_side, cv::Point2i& uv) {
         cv::Mat camera_matrix = camera_params_[camera_side]["camera_matrix"];
@@ -218,6 +359,7 @@ private:
         cv::Mat T = camera_params_[camera_side]["T"];
 
         // Convert point to camera coordinates
+<<<<<<< HEAD
         cv::Mat point_lidar_homogeneous = (cv::Mat_<double>(3,1) << point_lidar.x, point_lidar.y, point_lidar.z);
         cv::Mat point_camera = R * point_lidar_homogeneous + T;
 
@@ -226,19 +368,37 @@ private:
             cv::Mat uvw = camera_matrix * point_camera;
             int u = static_cast<int>(uvw.at<double>(0,0) / uvw.at<double>(2,0));
             int v = static_cast<int>(uvw.at<double>(1,0) / uvw.at<double>(2,0));
+=======
+        cv::Mat point_lidar_mat = (cv::Mat_<double>(3, 1) << point_lidar.x, point_lidar.y, point_lidar.z);
+        cv::Mat point_camera = R * point_lidar_mat + T;
+
+        // Only process points in front of the camera
+        if (point_camera.at<double>(2, 0) > 0) {
+            cv::Mat uvw = camera_matrix * point_camera;
+            double u = uvw.at<double>(0, 0) / uvw.at<double>(2, 0);
+            double v = uvw.at<double>(1, 0) / uvw.at<double>(2, 0);
+>>>>>>> c3b03f034b34b24bf89f9103c51278a9e4bea59f
 
             cv::Mat image = (camera_side == "left") ? current_image_left_ : current_image_right_;
             int width = image.cols;
             int height = image.rows;
 
             if (u >= 0 && u < width && v >= 0 && v < height) {
+<<<<<<< HEAD
                 uv = cv::Point2i(u, v);
+=======
+                uv = cv::Point2i(static_cast<int>(u), static_cast<int>(v));
+>>>>>>> c3b03f034b34b24bf89f9103c51278a9e4bea59f
                 return true;
             }
         }
         return false;
     }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> c3b03f034b34b24bf89f9103c51278a9e4bea59f
     std::string classifyConeColor(cv::Mat& image, int u, int v) {
         int half_kernel = kernel_size_ / 2;
         int u_start = std::max(u - half_kernel, 0);
@@ -264,10 +424,17 @@ private:
         cv::cvtColor(pixel_region_blur, hsv_region, cv::COLOR_BGR2HSV);
 
         // Define color ranges
+<<<<<<< HEAD
         cv::Scalar yellow_lower(20, 20, 50);
         cv::Scalar yellow_upper(50, 255, 255);
         cv::Scalar blue_lower(80, 20, 30);
         cv::Scalar blue_upper(170, 255, 255);
+=======
+        cv::Scalar yellow_lower(20, 50, 50);
+        cv::Scalar yellow_upper(40, 255, 255);
+        cv::Scalar blue_lower(80, 30, 30);
+        cv::Scalar blue_upper(140, 255, 255);
+>>>>>>> c3b03f034b34b24bf89f9103c51278a9e4bea59f
 
         // Create masks
         cv::Mat yellow_mask, blue_mask;
@@ -314,10 +481,13 @@ private:
     cv::Mat current_image_left_;
     cv::Mat current_image_right_;
 
+<<<<<<< HEAD
     // Image headers
     std_msgs::Header left_image_header_;
     std_msgs::Header right_image_header_;
 
+=======
+>>>>>>> c3b03f034b34b24bf89f9103c51278a9e4bea59f
     // Parameters
     int kernel_size_;
     double threshold_;

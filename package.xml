@@ -1,9 +1,9 @@
-<?xml version="1.0"?>
 <package format="2">
   <name>velodyne_process</name>
   <version>0.0.0</version>
   <description>The velodyne_process package</description>
 
+<<<<<<< HEAD
   <maintainer email="suyeon@todo.todo">suyeon</maintainer>
 
   <license>TODO</license>
@@ -12,12 +12,25 @@
   <buildtool_depend>catkin</buildtool_depend>
 
   <!-- 빌드 시 필요한 의존성 -->
+=======
+  <!-- Maintainer information -->
+  <maintainer email="suyeon@todo.todo">suyeon</maintainer>
+
+  <!-- License information -->
+  <license>TODO</license>
+
+  <!-- Build tool dependency -->
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <!-- Build dependencies (컴파일 시 필요한 종속성) -->
+>>>>>>> c3b03f034b34b24bf89f9103c51278a9e4bea59f
   <build_depend>roscpp</build_depend>
   <build_depend>sensor_msgs</build_depend>
   <build_depend>std_msgs</build_depend>
   <build_depend>pcl_ros</build_depend>
   <build_depend>pcl_conversions</build_depend>
   <build_depend>velodyne_pcl</build_depend>
+<<<<<<< HEAD
   <build_depend>message_generation</build_depend>
   <build_depend>geometry_msgs</build_depend>
   <build_depend>visualization_msgs</build_depend> <!-- 추가 -->
@@ -26,16 +39,31 @@
   <build_depend>opencv</build_depend> <!-- 추가 -->
 
   <!-- 빌드 후 내보내기 위한 의존성 -->
+=======
+  <build_depend>nav_msgs</build_depend>            <!-- Waypoint Publisher에서 사용 -->
+  <build_depend>visualization_msgs</build_depend>  <!-- MarkerArray에서 사용 -->
+  <build_depend>erp_driver</build_depend>          <!-- erpStatusMsg에서 사용 -->
+  <build_depend>message_generation</build_depend>  <!-- 메시지 생성에 필요 -->
+  <build_depend>rubber_cone_mission</build_depend> <!-- CentroidWithLabelArray에서 사용 -->
+
+  <!-- Export dependencies (이 패키지를 다른 패키지가 빌드할 때 필요한 종속성) -->
+>>>>>>> c3b03f034b34b24bf89f9103c51278a9e4bea59f
   <build_export_depend>roscpp</build_export_depend>
   <build_export_depend>std_msgs</build_export_depend>
+  <build_export_depend>message_runtime</build_export_depend>
 
+<<<<<<< HEAD
   <!-- 실행 시 필요한 의존성 -->
+=======
+  <!-- Runtime dependencies (실행 시 필요한 종속성) -->
+>>>>>>> c3b03f034b34b24bf89f9103c51278a9e4bea59f
   <exec_depend>roscpp</exec_depend>
   <exec_depend>sensor_msgs</exec_depend>
   <exec_depend>std_msgs</exec_depend>
   <exec_depend>pcl_ros</exec_depend>
   <exec_depend>pcl_conversions</exec_depend>
   <exec_depend>velodyne_pcl</exec_depend>
+<<<<<<< HEAD
   <exec_depend>message_runtime</exec_depend>
   <exec_depend>geometry_msgs</exec_depend>
   <exec_depend>visualization_msgs</exec_depend> <!-- 추가 -->
@@ -46,5 +74,15 @@
 
   <export>
     <!-- 기타 설정이 필요하면 여기에 추가 -->
+=======
+  <exec_depend>nav_msgs</exec_depend>              <!-- Waypoint Publisher에서 사용 -->
+  <exec_depend>visualization_msgs</exec_depend>    <!-- MarkerArray에서 사용 -->
+  <exec_depend>erp_driver</exec_depend>            <!-- erpStatusMsg에서 사용 -->
+  <exec_depend>message_runtime</exec_depend>       <!-- 메시지 런타임에 필요 -->
+  <exec_depend>rubber_cone_mission</exec_depend>   <!-- CentroidWithLabelArray에서 사용 -->
+
+  <export>
+    <!-- Other tools can request additional information be placed here -->
+>>>>>>> c3b03f034b34b24bf89f9103c51278a9e4bea59f
   </export>
 </package>

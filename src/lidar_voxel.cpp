@@ -31,7 +31,7 @@ int main(int argc, char** argv)
     ros::init(argc, argv, "lidar_voxel");
     ros::NodeHandle nh;
 
-    ros::Subscriber sub = nh.subscribe("/velodyne_points", 1, cloud_callBack);
+    ros::Subscriber sub = nh.subscribe("/synced/velodyne_points", 1, cloud_callBack);
     pub = nh.advertise<sensor_msgs::PointCloud2> ("lidar_voxel", 1);
 
     std::cout << "voxel complete" << std::endl;

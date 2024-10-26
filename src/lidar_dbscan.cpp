@@ -117,8 +117,11 @@ struct DBSCAN
                 if (neighbors.size() >= minPts) {
                     std::vector<int> cluster;
                     expandCluster(i, neighbors, cluster, visited, labels, clusterID);
-                    clusters.push_back(cluster);
-                    clusterID++;
+                    if (cluster.size() < 400) { // max voxel cluster size
+                      clusters.push_back(cluster);
+                      clusterID++;
+                      std::cout << "size : " << cluster.size() << std::endl;
+                    }
                 }
             }
         }
@@ -258,7 +261,7 @@ int main(int argc, char** argv)
     ros::init(argc, argv, "lidar_dbscan");
     ros::NodeHandle nh;
 
-    ros::Subscriber sub = nh.subscribe("lidar_ransac", 1, cloud_cb);
+    ros::Subscriber sub = nh.subscribe("lidar_outlier", 1, cloud_cb);
     sub_lane_center = nh.subscribe("/lane_center", 1, laneCenterCallback);  // 중앙 차선 구독
     pub_cloud = nh.advertise<sensor_msgs::PointCloud2>("dbscan_result", 1);
     pub_boxes = nh.advertise<visualization_msgs::MarkerArray>("bounding_boxes", 1);

@@ -12,11 +12,22 @@ find_package(catkin REQUIRED COMPONENTS
   pcl_ros
   pcl_conversions
   velodyne_pcl
+<<<<<<< HEAD
   message_generation
   geometry_msgs
   visualization_msgs  # 추가
   cv_bridge           # 추가
   image_transport     # 추가
+=======
+  rubber_cone_mission
+  message_generation
+  geometry_msgs
+  cv_bridge
+  image_transport
+  nav_msgs
+  visualization_msgs
+  erp_driver
+>>>>>>> c3b03f034b34b24bf89f9103c51278a9e4bea59f
 )
 
 ## 메시지 파일 등록
@@ -35,7 +46,9 @@ generate_messages(
 
 ## PCL 찾기
 find_package(PCL REQUIRED)
+find_package(OpenCV REQUIRED)
 
+<<<<<<< HEAD
 ## OpenCV 찾기
 find_package(OpenCV REQUIRED)
 
@@ -43,15 +56,20 @@ find_package(OpenCV REQUIRED)
 catkin_package(
   CATKIN_DEPENDS roscpp std_msgs sensor_msgs pcl_ros pcl_conversions velodyne_pcl message_runtime geometry_msgs visualization_msgs cv_bridge image_transport
   DEPENDS PCL OpenCV
+=======
+catkin_package(
+  CATKIN_DEPENDS roscpp std_msgs sensor_msgs pcl_ros pcl_conversions velodyne_pcl message_runtime
+  DEPENDS PCL mlpack
+>>>>>>> c3b03f034b34b24bf89f9103c51278a9e4bea59f
 )
 
-## include 디렉토리
 include_directories(
   include
   ${catkin_INCLUDE_DIRS}
   ${PCL_INCLUDE_DIRS}
   ${OpenCV_INCLUDE_DIRS}  # OpenCV 헤더 추가
 )
+
 
 ## PCL 라이브러리 링크 디렉토리 추가
 link_directories(${PCL_LIBRARY_DIRS})
@@ -63,8 +81,14 @@ add_executable(lidar_voxel_node src/lidar_voxel.cpp)
 add_executable(lidar_roi_node src/lidar_roi.cpp)
 add_executable(lidar_outlier_node src/lidar_outlier.cpp)
 add_executable(lidar_dbscan_node src/lidar_dbscan.cpp)
+add_executable(lidar_dbscan_cone_node src/lidar_dbscan_cone.cpp)
 add_executable(lane_filtering_node src/lane_filtering.cpp)
+<<<<<<< HEAD
 add_executable(centroid_pub_color_node src/centroid_pub_color.cpp)  # 추가된 부분
+=======
+add_executable(centroid_pub_color_node src/centroid_pub_color.cpp)
+add_executable(waypoint_publisher_node src/waypoint_publisher.cpp)
+>>>>>>> c3b03f034b34b24bf89f9103c51278a9e4bea59f
 
 ## 라이브러리 링크
 target_link_libraries(lidar_ransac_node
@@ -103,11 +127,36 @@ target_link_libraries(centroid_pub_color_node
   ${OpenCV_LIBRARIES}  # OpenCV 라이브러리 추가
 )
 
+target_link_libraries(lidar_dbscan_cone_node
+  ${catkin_LIBRARIES}
+  ${PCL_LIBRARIES}  # PCL 라이브러리 추가
+)
+
+target_link_libraries(centroid_pub_color_node
+  ${catkin_LIBRARIES}
+  ${PCL_LIBRARIES}
+  ${OpenCV_LIBRARIES}  # OpenCV 라이브러리 추가
+)
+
+target_link_libraries(waypoint_publisher_node
+  ${catkin_LIBRARIES}
+)
+
+
 ## 빌드 순서를 위한 의존성 추가
 add_dependencies(lidar_ransac_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(lidar_voxel_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(lidar_roi_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+<<<<<<< HEAD
 add_dependencies(lidar_outlier_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(lidar_dbscan_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(lane_filtering_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(centroid_pub_color_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})  # 추가된 부분
+=======
+add_dependencies(lidar_outlier_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})  
+add_dependencies(lidar_dbscan_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(lidar_dbscan_cone_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})  
+add_dependencies(lane_filtering_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(centroid_pub_color_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(waypoint_publisher_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS}) 
+>>>>>>> c3b03f034b34b24bf89f9103c51278a9e4bea59f
