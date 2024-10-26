@@ -13,13 +13,24 @@ find_package(catkin REQUIRED COMPONENTS
   pcl_conversions
   velodyne_pcl
   rubber_cone_mission
+  message_generation
 )
 
+add_message_files(
+  FILES
+  ClusterInfo.msg
+  ClusterBounds.msg
+)
+
+generate_messages(
+  DEPENDENCIES
+  std_msgs
+)
 ## PCL 찾기
 find_package(PCL REQUIRED)
 
 catkin_package(
-  CATKIN_DEPENDS roscpp std_msgs sensor_msgs pcl_ros pcl_conversions velodyne_pcl
+  CATKIN_DEPENDS roscpp std_msgs sensor_msgs pcl_ros pcl_conversions velodyne_pcl message_runtime
   DEPENDS PCL mlpack
 )
 

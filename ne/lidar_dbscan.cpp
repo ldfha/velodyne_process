@@ -134,7 +134,7 @@ struct DBSCAN
                 if (neighbors.size() >= minPts) {
                     std::vector<int> cluster;
                     expandCluster(i, neighbors, cluster, visited, labels, clusterID);
-                    if (cluster.size() < 600) {  // 최대 클러스터 크기 제한
+                    if (cluster.size() < 400) {  // 최대 클러스터 크기 제한
                         clusters.push_back(cluster);
                         clusterID++;
                         std::cout << "Cluster size: " << cluster.size() << std::endl;
@@ -240,7 +240,7 @@ void cloud_cb(const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
             marker.color.g = 1.0f;
             marker.color.b = 0.0f;
             marker.color.a = 0.5f;
-            marker.lifetime = ros::Duration(0.5);
+            marker.lifetime = ros::Duration(1.0);
             boxArray.markers.push_back(marker);
 
             // 센트로이드와 레이블 추가
@@ -251,7 +251,7 @@ void cloud_cb(const sensor_msgs::PointCloud2ConstPtr& cloud_msg)
 
             // 센트로이드 마커 생성
             visualization_msgs::Marker centroid_marker;
-            centroid_marker.header.frame_id = "map";
+            centroid_marker.header.frame_id = "velodyne";
             centroid_marker.header.stamp = ros::Time::now();
             centroid_marker.ns = "cluster_centroids";
             centroid_marker.id = current_cluster_id;
